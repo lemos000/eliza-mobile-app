@@ -85,7 +85,7 @@ export default function RegisterScreen({ navigation }: Props) {
 
           {loading ? (
           <View style={{
-            backgroundColor: "#111",
+            backgroundColor: "#1a1a1a",
             borderRadius: 4,
             borderColor: "#00ff00",
             borderWidth: 1,

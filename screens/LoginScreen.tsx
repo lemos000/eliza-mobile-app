@@ -37,19 +37,23 @@ export default function LoginScreen({ navigation, setToken }: LoginProps) {
     <View style={styles.container}>
       <Text style={styles.title}>LOGIN</Text>
       <TextInput
+        style={styles.input}
         placeholder="E-mail"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
         keyboardType="email-address"
-        style={styles.input}
+        placeholderTextColor="#00ff00"
+        selectionColor="#00ff00"
       />
       <TextInput
+        style={styles.input}
         placeholder="Senha"
         value={senha}
         onChangeText={setSenha}
         secureTextEntry
-        style={styles.input}
+        placeholderTextColor="#00ff00"
+        selectionColor="#00ff00"
       />
       <TouchableOpacity
        onPress={handleLogin} style={styles.botao}>
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: "#1a1a1a",
   },
-  input: {
+ input: {
     height: 48,
     borderColor: "#00ff00",
     borderWidth: 1,

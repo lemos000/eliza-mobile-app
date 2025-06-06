@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, ActivityIndicator, Alert, TouchableOpacity, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 interface Usuario {
   nome: string;
   email: string;
 }
 
-
-export default function ProfileScreen({ setToken }: { setToken: (token: string | null) => void }) {
+export default function TelaPerfil({ setToken }: { setToken: (token: string | null) => void }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [carregando, setCarregando] = useState(true);
 
-  const fetchProfile = async () => {
-    setLoading(true);
+  const buscarPerfil = async () => {
+    setCarregando(true);
     try {
       const token = await AsyncStorage.getItem('token');
       if (!token) {
@@ -32,14 +30,14 @@ export default function ProfileScreen({ setToken }: { setToken: (token: string |
       Alert.alert('Erro', 'Não foi possível carregar seu perfil.');
       setToken(null);
     }
-    setLoading(false);
+    setCarregando(false);
   };
 
   useEffect(() => {
-    fetchProfile();
+    buscarPerfil();
   }, []);
 
-  const handleLogout = async () => {
+  const sair = async () => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('nome');
     await AsyncStorage.removeItem('email');
@@ -47,7 +45,7 @@ export default function ProfileScreen({ setToken }: { setToken: (token: string |
     setToken(null);
   };
 
-  if (loading) {
+  if (carregando) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#1e88e5" />
@@ -58,53 +56,88 @@ export default function ProfileScreen({ setToken }: { setToken: (token: string |
   if (!usuario) {
     return (
       <View style={styles.container}>
-        <Text>Não foi possível carregar os dados do usuário.</Text>
-        <Button title="Tentar novamente" onPress={fetchProfile} />
+        <Text style={styles.erro}>Não foi possível carregar os dados do usuário.</Text>
+        <Button title="Tentar novamente" onPress={buscarPerfil} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Meu Perfil</Text>
-      <Text style={styles.label}>Nome:</Text>
-      <Text style={styles.value}>{usuario.nome}</Text>
-      <Text style={styles.label}>Email:</Text>
-      <Text style={styles.value}>{usuario.email}</Text>
-      <View style={{ marginTop: 32 }}>
-        <Button title="Sair" color="#d32f2f" onPress={handleLogout} />
+      <Text style={styles.titulo}>Meu Perfil</Text>
+      <View style={styles.secao}>
+        <Text style={styles.rotulo}>Nome:</Text>
+        <Text style={styles.valor}>{usuario.nome}</Text>
       </View>
+      <View style={styles.secao}>
+        <Text style={styles.rotulo}>Email:</Text>
+        <Text style={styles.valor}>{usuario.email}</Text>
+      </View>
+      <TouchableOpacity onPress={sair} style={styles.botaoSair}>
+        <Text style={styles.textoBotao}>Sair</Text>
+      </TouchableOpacity>
     </View>
   );
-};
+}
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    backgroundColor: '#1a1a1a',
+    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#181818', // dark terminal bg
+    padding: width < 400 ? 16 : 32,
   },
-  title: {
-    fontSize: 24,
+  titulo: {
+    fontSize: width < 400 ? 26 : 48,
     fontWeight: 'bold',
+    color: '#39ff14',
     marginBottom: 24,
+    fontFamily: 'monospace',
     textAlign: 'center',
-    color: '#00ff00', // terminal green
+    textShadowColor: '#0f0',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 6,
+  },
+  secao: {
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  rotulo: {
+    fontSize: 22,
+    color: '#00ff00',
+    fontWeight: '600',
+    fontFamily: 'monospace',
+    marginBottom: 4,
+  },
+  valor: {
+    fontSize: 20,
+    color: '#e0ffe0',
+    fontFamily: 'monospace',
+  },
+  botaoSair: {
+    marginTop: 30,
+    backgroundColor: '#39ff14',
+    borderWidth: 2,
+    borderColor: '#1e1e1e',
+    paddingVertical: width < 400 ? 10 : 14,
+    paddingHorizontal: width < 400 ? 30 : 50,
+    borderRadius: 10,
+    elevation: 4,
+  },
+  textoBotao: {
+    color: '#181818',
+    fontSize: width < 400 ? 16 : 18,
+    fontWeight: '700',
     fontFamily: 'monospace',
     letterSpacing: 1,
   },
-  label: {
+  erro: {
+    color: '#ff6666',
     fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 8,
-    color: '#00ff00', // terminal green
-    fontFamily: 'monospace',
-  },
-  value: {
-    fontSize: 16,
-    color: '#39ff14', // lighter green
-    marginBottom: 8,
-    fontFamily: 'monospace',
+    marginBottom: 16,
+    textAlign: 'center',
   },
 });

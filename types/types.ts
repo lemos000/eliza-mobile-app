@@ -16,7 +16,7 @@ export interface Hist {
 
 
 export interface Mensagem {
-
+  id: number;
   textoUsuario: string;
   respostaBot: string;
   dataHora: string;
@@ -31,6 +31,7 @@ export interface AuthResponse {
   token: string;
   userName: string;
   userEmail: string;
+  id: string;
 }
 
 export interface AuthContextType {

@@ -47,7 +47,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#181818',
+        backgroundColor: '#1a1a1a',
         alignItems: 'center',
         justifyContent: 'center',
         padding: width < 400 ? 12 : 24,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     logo: {
         fontFamily: 'monospace',
         textAlign: 'center',
-        fontSize: width < 400 ? 15 : 40,
+        fontSize: width < 400 ? 10 : 40,
         color: '#39ff14',
         marginBottom: width < 400 ? 12 : 24,
         textShadowColor: '#0f0',
