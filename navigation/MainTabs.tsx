@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import ChatScreen from "../screens/ChatScreen";
 import HistoricoScreen from "../screens/HistoricoScreen";
-import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { MainTabParamList } from "../types/types";
 import { FontAwesome5 } from '@expo/vector-icons';
