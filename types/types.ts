@@ -38,3 +38,20 @@ export interface AuthContextType {
   login: (email: string, senha: string) => Promise<void>;
   logout: () => Promise<void>;
 }
+
+export type AuthStackParamList = {
+    Home: undefined;
+    Login: undefined;
+    Register: undefined;
+  };
+  
+export type MainTabParamList = {
+    Chat: undefined;
+    Histórico: undefined;
+    Perfil: undefined;
+  };
+
+export type RootStackParamList = {
+  Auth: undefined;
+  Main: undefined;
+};

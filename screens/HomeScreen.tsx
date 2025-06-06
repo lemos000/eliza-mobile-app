@@ -1,78 +1,98 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { RootStackParamList } from '../App';
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../types/types';
+import { Dimensions } from 'react-native';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+type Props = NativeStackScreenProps<AuthStackParamList, 'Home'>;
 
-
-const HomeScreen = ({ navigation }: Props) => {
+export default function HomeScreen({ navigation }: Props) {
     return (
         <View style={styles.container}>
-            <Image
-                source={require('../assets/chatbot.png')}
-                style={styles.logo}
-                resizeMode="contain"
-            />
-            <Text style={styles.title}>Welcome to Eliza Chatbot 2.0</Text>
-            <Text style={styles.subtitle}>
-                Revived and enhanced with the latest AI technology, Eliza is here to assist you with your queries and provide a delightful chat experience.
+            <Text style={styles.logo}>
+    {`
+███████╗██╗     ██╗███████╗ █████╗ 
+██╔════╝██║     ██║╚══███╔╝██╔══██╗
+█████╗  ██║     ██║  ███╔╝ ███████║
+██╔══╝  ██║     ██║ ███╔╝  ██╔══██║
+███████╗███████╗██║███████╗██║  ██║
+╚══════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝
+    `}
             </Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('LoginScreen')}
+            <Text style={styles.titulo}>WELCOME TO ELIZA CHATBOT 2.0</Text>
+            <Text style={styles.subtitulo}>
+            Revived and enhanced with the latest AI technology, Eliza is here to assist you with your queries and provide a delightful chat experience.
+            </Text>
+            <View style={{ flexDirection: 'row', gap: 16 }}>
+            <TouchableOpacity
+                style={styles.botao}
+                onPress={() => navigation.navigate('Login')}
             >
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.textoBotao}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('RegisterScreen')}
+                style={styles.botao}
+                onPress={() => navigation.navigate('Register')}
             >
-                <Text style={styles.buttonText}>Register</Text>
+                <Text style={styles.textoBotao}>Register</Text>
             </TouchableOpacity>
             </View>
         </View>
     );
 };
 
-export default HomeScreen;
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f7fa',
+        backgroundColor: '#181818',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 24,
+        padding: width < 400 ? 12 : 24,
     },
     logo: {
-        marginBottom: 32,
-        transform: [{ scale: 1.3 }],
+        fontFamily: 'monospace',
+        textAlign: 'center',
+        fontSize: width < 400 ? 15 : 40,
+        color: '#39ff14',
+        marginBottom: width < 400 ? 12 : 24,
+        textShadowColor: '#0f0',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
     },
-    title: {
-        fontSize: 28,
+    titulo: {
+        fontSize: width < 400 ? 18 : 28,
         fontWeight: 'bold',
-        color: '#22223b',
-        marginBottom: 12,
+        color: '#39ff14',
+        marginBottom: width < 400 ? 8 : 12,
         textAlign: 'center',
+        textShadowColor: '#0f0',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 6,
     },
-    subtitle: {
-        fontSize: 16,
-        color: '#4a4e69',
+    subtitulo: {
+        fontSize: width < 400 ? 14 : 20,
+        color: '#b2ffb2',
         textAlign: 'center',
-        marginBottom: 32,
+        marginBottom: width < 400 ? 16 : 32,
     },
-    button: {
-        backgroundColor: '#3a86ff',
-        paddingVertical: 14,
-        paddingHorizontal: 40,
-        borderRadius: 30,
+    botao: {
+        backgroundColor: '#222',
+        borderColor: '#39ff14',
+        borderWidth: 2,
+        paddingVertical: width < 400 ? 10 : 14,
+        paddingHorizontal: width < 400 ? 24 : 40,
+        borderRadius: 6,
         elevation: 2,
+        marginHorizontal: 4,
     },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
+    textoBotao: {
+        color: '#39ff14',
+        fontSize: width < 400 ? 14 : 18,
         fontWeight: '600',
+        fontFamily: 'monospace',
+        letterSpacing: 1,
     },
 });

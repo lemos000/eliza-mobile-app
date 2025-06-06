@@ -8,8 +8,6 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import api from "../service/apicall";
 import { Hist, RespostaDTO } from "../types/types";
 

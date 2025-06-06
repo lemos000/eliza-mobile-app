@@ -1,93 +1,35 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator, View } from 'react-native';
+import AuthStack from './AuthNavigator';
+import MainTabs from './MainTabs';
 
-import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
-import ChatScreen from "../screens/ChatScreen";
-import HomeScreen from "../screens/HomeScreen";
-import HistoricoScreen from "../screens/HistoricoScreen";
-import { ProfileScreen } from "../screens/ProfileScreen";
-import { MensagemCrudScreen } from "../screens/MensagemCrudScreen";
-import { FontAwesome5 } from '@expo/vector-icons';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+export default function App() {
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-
-function MainTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: () => (<FontAwesome5 name="home" size={24} color="black" />),
-        }}
-      />
-      <Tab.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{
-          tabBarIcon: () => (<FontAwesome5 name="comments" size={24} color="black" />),
-        }}
-      />
-      <Tab.Screen
-        name="Histórico"
-        component={HistoricoScreen}
-        options={{
-          tabBarIcon: () => (<FontAwesome5 name="history" size={24} color="black" />),
-        }}
-      />
-      <Tab.Screen
-        name="Perfil"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: () => (<FontAwesome5 name="user" size={24} color="black" />),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
-export default function AppNavigator() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const checkToken = async () => {
+    const storedToken = await AsyncStorage.getItem('token');
+    setToken(storedToken);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("token"); 
-      setIsLoggedIn(!!user);
-      setIsLoading(false);
-    };
-
-    checkUser();
+    checkToken();
   }, []);
 
-  if (isLoading) {
-    return null; 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
   }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!isLoggedIn ? (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Main" component={MainTabs} />
-            <Stack.Screen name="MensagemCRUD" component={MensagemCrudScreen} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
-          </>
-        )}
-      </Stack.Navigator>
+      {token ? <MainTabs setToken={setToken} /> : <AuthStack setToken={setToken} />}
     </NavigationContainer>
   );
 }
-

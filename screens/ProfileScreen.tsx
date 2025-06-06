@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+
 
 interface Usuario {
   nome: string;
   email: string;
 }
 
-export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+
+export default function ProfileScreen({ setToken }: { setToken: (token: string | null) => void }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +19,6 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
       const token = await AsyncStorage.getItem('token');
       if (!token) {
         Alert.alert('Sessão expirada', 'Por favor, faça login novamente.');
-        navigation.navigate('Login');
         return;
       }
       const nome = await AsyncStorage.getItem('nome');
@@ -30,6 +30,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
       }
     } catch (err) {
       Alert.alert('Erro', 'Não foi possível carregar seu perfil.');
+      setToken(null);
     }
     setLoading(false);
   };
@@ -43,7 +44,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     await AsyncStorage.removeItem('nome');
     await AsyncStorage.removeItem('email');
     setUsuario(null);
-    navigation.navigate('Login');
+    setToken(null);
   };
 
   if (loading) {
@@ -78,8 +79,32 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, justifyContent: 'center', backgroundColor: '#f7f9fb' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 24, textAlign: 'center', color: '#1e88e5' },
-  label: { fontSize: 16, fontWeight: 'bold', marginTop: 8 },
-  value: { fontSize: 16, color: '#555', marginBottom: 8 },
+  container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: '#181818', // dark terminal bg
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 24,
+    textAlign: 'center',
+    color: '#00ff00', // terminal green
+    fontFamily: 'monospace',
+    letterSpacing: 1,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 8,
+    color: '#00ff00', // terminal green
+    fontFamily: 'monospace',
+  },
+  value: {
+    fontSize: 16,
+    color: '#39ff14', // lighter green
+    marginBottom: 8,
+    fontFamily: 'monospace',
+  },
 });
