@@ -1,12 +1,14 @@
 ## IMPORTANTE - FUNCIONALIDADE
 
-Devido a nossa api estar hospedada no Render, é possível que haja um atraso nas requisições para a api, peço que, ao registrar o seu usuário para testar a plataforma, aguarde de 3 a 5 minutos para a inicialização correta da api rest, agradeço pela compreensão.
+Devido a nossa api estar hospedada no Render, é possível que haja um atraso nas requisições para a api, peço que, ao registrar o seu usuário para testar a plataforma, aguarde de 5 a 7 minutos carregar para a inicialização correta da api rest, agradeço pela compreensão.
 
 <h1 align="center">Eliza 2.0 Mobile app </h1>
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-a.svg" />
   </a>
 </p>
+
+Link da apresentação: https://youtu.be/gBEFScYD6yM 
 
 Eliza é uma aplicação mobile concebida como um MVP para servir como psicóloga virtual empática e acessível, especialmente voltada ao suporte psicológico de pessoas em situação de vulnerabilidade após desastres, catástrofes naturais ou grandes crises sociais.
 
